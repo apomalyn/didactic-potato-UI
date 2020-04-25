@@ -1,8 +1,14 @@
-/// FLUTTER
+import 'package:UI/core/constants/router_paths.dart';
+/// FLUTTER AND THIRD-PARTIES
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-/// COLORS
+/// VIEWMODEL
+import 'package:UI/core/viewmodels/sign_in_view_model.dart';
+
+/// OTHER
 import 'package:UI/ui/utils/theme.dart' as AppColor;
+import 'package:UI/ui/views/base_widget.dart';
 
 class SignInView extends StatefulWidget {
   @override
@@ -15,93 +21,105 @@ class _SignInState extends State<SignInView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        iconTheme: IconThemeData(size: 512),
-        elevation: 0,
-      ),
-      body: Center(
-        child: Card(
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle, color: AppColor.sandy),
-                ),
-                SizedBox(height: 75),
-                Form(
-                  key: _formKey,
-                  onChanged: () => setState(
-                      () => _enableBtn = _formKey.currentState.validate()),
-                  child: Container(
-                    width: 400,
-                    child: Column(
+    return BaseWidget<SignInViewModel>(
+      model: SignInViewModel(authenticationService: Provider.of(context)),
+        builder: (context, model, child) => Scaffold(
+              appBar: AppBar(
+                backgroundColor: Colors.transparent,
+                iconTheme: IconThemeData(size: 512),
+                elevation: 0,
+              ),
+              body: Center(
+                child: Card(
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+                    child: model.busy ? Center(child: CircularProgressIndicator()):Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        TextFormField(
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Email',
-                          ),
-                          validator: _validateEmail,
+                        Container(
+                          width: 100,
+                          height: 100,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle, color: AppColor.sandy),
                         ),
-                        SizedBox(height: 10),
-                        TextFormField(
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Password',
-                          ),
-                          validator: _validatePassword,
-                        ),
-                        SizedBox(height: 10),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            RaisedButton(
-                              child: Text('Sign In'),
-                              color: AppColor.persian,
-                              onPressed: _enableBtn ? () {} : null,
-                              elevation: 5,
+                        SizedBox(height: 75),
+                        Form(
+                          key: _formKey,
+                          onChanged: () => setState(() =>
+                              _enableBtn = _formKey.currentState.validate()),
+                          child: Container(
+                            width: 400,
+                            child: Column(
+                              children: <Widget>[
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Email',
+                                  ),
+                                  validator: _validateEmail,
+                                ),
+                                SizedBox(height: 10),
+                                TextFormField(
+                                  obscureText: true,
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Password',
+                                  ),
+                                  validator: _validatePassword,
+                                ),
+                                SizedBox(height: 10),
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    RaisedButton(
+                                      child: Text('Sign In'),
+                                      color: AppColor.persian,
+                                      onPressed: _enableBtn ? () {} : null,
+                                      elevation: 5,
+                                    ),
+                                    SizedBox(width: 20),
+                                    RaisedButton(
+                                      child: Text('Register'),
+                                      color: AppColor.persian,
+                                      elevation: 5,
+                                      onPressed: () {},
+                                    )
+                                  ],
+                                )
+                              ],
                             ),
-                            SizedBox(width: 20),
-                            RaisedButton(
-                              child: Text('Register'),
-                              color: AppColor.persian,
-                              elevation: 5,
-                              onPressed: () {},
-                            )
-                          ],
-                        )
+                          ),
+                        ),
+                        SizedBox(height: 30),
+                        _buildSignInWithButton('Google', () async {
+                            var loginSuccess = await model.signInWithGoogle();
+                            if (loginSuccess) {
+                              Navigator.pushNamed(context, RouterPaths.HOME);
+                            }
+                        }),
+                        SizedBox(height: 10),
+                        _buildSignInWithButton('Github', () async {
+                          var loginSuccess = await model.signInWithGithub();
+                          if (loginSuccess) {
+                            Navigator.pushNamed(context, RouterPaths.HOME);
+                          }
+                        })
                       ],
                     ),
                   ),
                 ),
-                SizedBox(height: 30),
-                _buildSignInWithButton('Google'),
-                SizedBox(height: 10),
-                _buildSignInWithButton('Github')
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
+              ),
+            ));
   }
 
-  Widget _buildSignInWithButton(String company) {
+  Widget _buildSignInWithButton(String company, Function callback) {
     return RaisedButton.icon(
-        onPressed: () {},
-        icon: ImageIcon(
-            AssetImage('assets/images/${company.toLowerCase()}_logo.png')),
-        label: Text("Sign in with $company"),
-        color: Colors.white,
+      onPressed: callback,
+      icon: ImageIcon(
+          AssetImage('assets/images/${company.toLowerCase()}_logo.png')),
+      label: Text("Sign in with $company"),
+      color: Colors.white,
       padding: EdgeInsets.all(10),
       elevation: 5,
     );
