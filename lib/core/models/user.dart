@@ -20,6 +20,8 @@ class User {
 
   List<Appointment> appointments;
 
+  bool isNewUser;
+
   User({@required this.uuid, @required this.firstname, @required this.lastname, @required this.email, @required this.pictureLink,
     @required this.availabilities, @required this.appointments});
 
@@ -30,8 +32,8 @@ class User {
       lastname: json['lastname'],
       email: json['email'],
       pictureLink: json['pictureLink'],
-      availabilities: json['availabilities'].map((i) => TimeSlot.fromJson(i)).toList(),
-      appointments: json['appointments'].map((i) => Appointment.fromJson(i)).toList(),
+      availabilities: (json['availabilities'] as List).map((i) => TimeSlot.fromJson(i)).toList(),
+      appointments: (json['appointments'] as List).map((i) => Appointment.fromJson(i)).toList(),
     );
   }
 

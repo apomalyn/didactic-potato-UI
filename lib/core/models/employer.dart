@@ -37,9 +37,9 @@ class Employer extends User {
       lastname: json['lastname'],
       email: json['email'],
       pictureLink: json['pictureLink'],
-      availabilities: json['availabilities'].map((i) => TimeSlot.fromJson(i)).toList(),
-      appointments: json['appointments'].map((i) => Appointment.fromJson(i)).toList(),
-      favoris: json['favoris'].map((i) => Student.fromJson(i)).toList()
+      availabilities: (json['availabilities'] as List).map((i) => TimeSlot.fromJson(i)).toList(),
+      appointments: (json['appointments'] as List).map((i) => Appointment.fromJson(i)).toList(),
+      favoris: (json['favoris'] as List).map((i) => Student.fromJson(i)).toList()
     );
   }
 }

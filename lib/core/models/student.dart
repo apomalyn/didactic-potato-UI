@@ -49,11 +49,11 @@ class Student extends User {
         lastname: json['lastname'],
         email: json['email'],
         pictureLink: json['pictureLink'],
-        availabilities: json['availabilities'].map((i) => TimeSlot.fromJson(i)).toList(),
-        appointments: json['appointments'].map((i) => Appointment.fromJson(i)).toList(),
+        availabilities: (json['availabilities'] as List).map((i) => TimeSlot.fromJson(i)).toList(),
+        appointments: (json['appointments'] as List).map((i) => Appointment.fromJson(i)).toList(),
         cv: json['cv'],
         isAvailable: json['isAvailable'],
-        tags: json['tags'].map((i) => Tag.fromJson(i)).toList(),
+        tags: (json['tags'] as List).map((i) => Tag.fromJson(i)).toList(),
         searchingFor: null); //TODO <==
   }
 }
