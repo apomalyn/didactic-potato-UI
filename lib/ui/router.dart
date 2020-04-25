@@ -15,14 +15,17 @@ class Router {
       case RouterPaths.HOME:
         return MaterialPageRoute(
             builder: (_) => Scaffold(
-                  body: Column(
+                  body: Center(
+                      child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       RaisedButton(
                         child: Text("Sign In"),
-                        onPressed: () => Navigator.pushReplacementNamed(_, RouterPaths.SIGN_IN),
+                        onPressed: () => Navigator.pushReplacementNamed(
+                            _, RouterPaths.SIGN_IN),
                       )
                     ],
-                  ),
+                  )),
                 ));
       case RouterPaths.SIGN_IN:
         return MaterialPageRoute(builder: (_) => SignInView());
