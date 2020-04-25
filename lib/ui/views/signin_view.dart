@@ -4,8 +4,15 @@ import 'package:flutter/material.dart';
 /// COLORS
 import 'package:UI/ui/utils/theme.dart' as AppColor;
 
+class SignInView extends StatefulWidget {
+  @override
+  _SignInState createState() => _SignInState();
+}
 
-class SignInView extends StatelessWidget {
+class _SignInState extends State<SignInView> {
+  final _formKey = GlobalKey<FormState>();
+  bool _enableBtn = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,11 +30,58 @@ class SignInView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  width: 60,
-                  height: 60,
+                  width: 100,
+                  height: 100,
                   decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppColor.sandy),
+                      shape: BoxShape.circle, color: AppColor.sandy),
+                ),
+                SizedBox(height: 75),
+                Form(
+                  key: _formKey,
+                  onChanged: () => setState(
+                      () => _enableBtn = _formKey.currentState.validate()),
+                  child: Container(
+                    width: 400,
+                    child: Column(
+                      children: <Widget>[
+                        TextFormField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Email',
+                          ),
+                          validator: _validateEmail,
+                        ),
+                        SizedBox(height: 10),
+                        TextFormField(
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Password',
+                          ),
+                          validator: _validatePassword,
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            RaisedButton(
+                              child: Text('Sign In'),
+                              color: AppColor.persian,
+                              onPressed: _enableBtn ? () {} : null,
+                              elevation: 5,
+                            ),
+                            SizedBox(width: 20),
+                            RaisedButton(
+                              child: Text('Register'),
+                              color: AppColor.persian,
+                              elevation: 5,
+                              onPressed: () {},
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
                 ),
                 SizedBox(height: 30),
                 _buildSignInWithButton('Google'),
@@ -41,20 +95,30 @@ class SignInView extends StatelessWidget {
     );
   }
 
-  Widget _buildButton(String title) {
-    return RaisedButton(
-      color: AppColor.persian,
-      onPressed: () {},
-      child: Text(title),
-    );
-  }
-
   Widget _buildSignInWithButton(String company) {
     return RaisedButton.icon(
         onPressed: () {},
         icon: ImageIcon(
             AssetImage('assets/images/${company.toLowerCase()}_logo.png')),
         label: Text("Sign in with $company"),
-        color: Colors.white);
+        color: Colors.white,
+      padding: EdgeInsets.all(10),
+      elevation: 5,
+    );
+  }
+
+  String _validateEmail(String value) {
+    RegExp regExp =
+        RegExp(r'([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})');
+
+    if (value.length == 0)
+      return 'Please enter your email.';
+    else if (!regExp.hasMatch(value)) return 'Please enter a valid email.';
+    return null;
+  }
+
+  String _validatePassword(String value) {
+    if (value.length == 0) return 'Please enter your password.';
+    return null;
   }
 }
