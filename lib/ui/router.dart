@@ -21,7 +21,7 @@ class Router {
                     children: <Widget>[
                       RaisedButton(
                         child: Text("Sign In"),
-                        onPressed: () => Navigator.pushReplacementNamed(
+                        onPressed: () => Navigator.pushNamed(
                             _, RouterPaths.SIGN_IN),
                       )
                     ],
