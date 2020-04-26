@@ -4,6 +4,9 @@ class Constants {
   static const String API_URL = "///";
 
   static const String GET_USER = "$API_URL/user/{uuid}";
+  static const String ADD_STUDENT = "$API_URL/student";
+  static const String ADD_EMPLOYER = "$API_URL/employer";
+  static const String GET_FAVORITES = "$API_URL/employer/{uuid}/favorites";
 
   static List<Tag> tags = [
     Tag(name: 'Flutter'),
