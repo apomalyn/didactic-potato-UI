@@ -1,4 +1,4 @@
-# NAME
+# Bank of CV
 This project is the link with this [repository](https://github.com/olivercrush/furry-octo-eureka-backend).
 
 ## Getting Started
