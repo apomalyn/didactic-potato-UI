@@ -5,8 +5,8 @@ on:
     branches:
       - master
 jobs:
-  build:
-    name: Build job
+  build-deploy:
+    name: Build/Deploy job
     runs-on: ubuntu-18.04
     steps:
       - name: Downloading workflow dependencies
@@ -24,11 +24,7 @@ jobs:
 
       - name: Building app
         run: flutter build web
-  deploy:
-    name: Deploy job
-    runs-on: ubuntu-18.04
-    needs: build
-    steps:
+
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
