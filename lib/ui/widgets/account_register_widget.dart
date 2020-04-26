@@ -21,20 +21,31 @@ class _AccountRegisterFormState extends State<AccountRegisterForm> {
           child: Container(
             width: 700,
             height: 500,
-            child: Row(
+            child: Column(
               children: <Widget>[
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 48.0, top: 32.0),
-                    child: Text(
-                      "Nice to meet you!",
-                      style: TextStyle(
-                        fontSize: 48.0,
-                        fontWeight: FontWeight.bold
-                      ),
+                Row(
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 48.0, top: 32.0),
+                        child: Text(
+                          "Nice to meet you!",
+                          style: TextStyle(
+                            fontSize: 48.0,
+                            fontWeight: FontWeight.bold
+                          ),
+                        ),
+                      )
                     ),
-                  )
+                    SizedBox(height: 15.0),
+                  ],
+                ),
+                TextFormField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Email',
+                  ),
                 ),
               ],
             ),
