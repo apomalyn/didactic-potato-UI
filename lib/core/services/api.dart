@@ -21,7 +21,7 @@ class Api {
     //var response = await client.get(Constants.GET_USER.replaceFirst('{uuid}', uuid));
 
     //var json = jsonDecode(response.body);
-    var json = jsonDecode('{"type":1,"uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa6","firstname": "John","lastname": "Doe","email": "user@example.com","availabilities": [{"date": "2020-04-25","duration": 0}],"appointments": [{"timeSlot": {"date": "2020-04-25","duration": 0},"studentuuid": "3fa85f64-5717-4562-b3fc-2c963f66afa6","employeruuid": "3fa85f64-5717-4562-b3fc-2c963f66afa6","url": "string"}],"picture": "string","CV": "string","tags": [{"name": "Flutter","description": "A true cross-platform development framework"}],"isAvailable": true,"jobType": ["INTERNSHIP"]}');
+    var json = jsonDecode('{"type":1,"uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa6","firstname": "John","lastname": "Doe","email": "user@example.com","availabilities": [{"date": "2020-04-25","duration": 0}],"appointments": [{"timeSlot": {"date": "2020-04-25","duration": 0},"studentuuid": "3fa85f64-5717-4562-b3fc-2c963f66afa6","employeruuid": "3fa85f64-5717-4562-b3fc-2c963f66afa6","url": "string"}],"picture": "string","CV": "string","tags": [{"name": "Flutter","description": "A true cross-platform development framework"}, {"name": "Python","description": "A true cross-platform development framework"},{"name": "GCP","description": "A true cross-platform development framework"},{"name": "Firebase","description": "A true cross-platform development framework"}],"isAvailable": true,"jobType": ["INTERNSHIP"]}');
 
     //if(response.statusCode == 202)
       return json['type'] == 1 ? Student.fromJson(json):Employer.fromJson(json);

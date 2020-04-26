@@ -7,7 +7,7 @@ import 'package:UI/core/models/tag.dart';
 import 'package:UI/core/models/time_slot.dart';
 import 'package:UI/core/models/user.dart';
 
-enum JobType { INTERNSHIP, PART_TIME, FULL_TIME }
+enum JobType { Internship, PartTime, FullTime }
 
 class Student extends User {
   String cv;
@@ -49,11 +49,19 @@ class Student extends User {
         lastname: json['lastname'],
         email: json['email'],
         pictureLink: json['pictureLink'],
-        availabilities: (json['availabilities'] as List).map((i) => TimeSlot.fromJson(i)).toList(),
-        appointments: (json['appointments'] as List).map((i) => Appointment.fromJson(i)).toList(),
+        availabilities: (json['availabilities'] as List)
+            .map((i) => TimeSlot.fromJson(i))
+            .toList(),
+        appointments: (json['appointments'] as List)
+            .map((i) => Appointment.fromJson(i))
+            .toList(),
         cv: json['cv'],
         isAvailable: json['isAvailable'],
         tags: (json['tags'] as List).map((i) => Tag.fromJson(i)).toList(),
-        searchingFor: null); //TODO <==
+        searchingFor: json['jobType'] == 'INTERNSHIP'
+            ? JobType.Internship
+            : json['jobType'] == 'PART_TIME'
+                ? JobType.PartTime
+                : JobType.FullTime);
   }
 }

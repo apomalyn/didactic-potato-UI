@@ -33,5 +33,6 @@ List<SingleChildWidget> uiConsummableProviders = [
   StreamProvider<User>(
     create: (context) =>
     Provider.of<UserRepository>(context, listen: false).user,
+    initialData: null,
   )
 ];
