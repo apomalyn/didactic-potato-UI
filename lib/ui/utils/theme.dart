@@ -5,7 +5,11 @@ ThemeData lightTheme = ThemeData.light().copyWith(
   primaryColor: Color(0xfff4a261),
   accentColor: Color(0xff2a9d8f),
   errorColor: Color(0xffe76f51),
-  scaffoldBackgroundColor: Color(0xfff4a261)
+  scaffoldBackgroundColor: Color(0xfff4a261),
+  appBarTheme: AppBarTheme(
+    elevation: 0,
+    color: Colors.transparent
+  )
 );
 
 const Color charcoal = Color(0xff264653);

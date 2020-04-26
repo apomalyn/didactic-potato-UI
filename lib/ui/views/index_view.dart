@@ -12,47 +12,49 @@ class IndexView extends StatelessWidget {
 
     _checkIfSignedIn(Provider.of<UserRepository>(context), context);
 
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                "Stop running for job postings!",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 40.0,
-                    fontWeight: FontWeight.bold
-                ),
-              ),
-              Container(
-                width: 400.0,
-                padding: EdgeInsets.only(top: 8.0),
-                child: Text(
-                  "By leaving the choice to the students for the job they want, employers get the chance to obtain the expertise they want and students to land their dream job.",
+    return Scaffold(
+      body: Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "Stop running for job postings!",
                   style: TextStyle(
-                    color: Colors.white,
+                      color: Colors.white,
+                      fontSize: 40.0,
+                      fontWeight: FontWeight.bold
                   ),
-                  textAlign: TextAlign.center,
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 32.0),
-                child: MaterialButton(
-                  height: 64.0,
-                  onPressed: () => Navigator.pushNamed(context, RouterPaths.SIGN_IN),
-                  color: Color(0xFF2a9d8f),
+                Container(
+                  width: 400.0,
+                  padding: EdgeInsets.only(top: 8.0),
                   child: Text(
-                    "Getting Started!",
-                    style: TextStyle(color: Colors.white),
+                    "By leaving the choice to the students for the job they want, employers get the chance to obtain the expertise they want and students to land their dream job.",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
+                ),
+                Padding(
+                    padding: EdgeInsets.only(top: 32.0),
+                    child: MaterialButton(
+                      height: 64.0,
+                      onPressed: () => Navigator.pushNamed(context, RouterPaths.SIGN_IN),
+                      color: Color(0xFF2a9d8f),
+                      child: Text(
+                        "Getting Started!",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )
                 )
-              )
-            ],
-          )
-        ],
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
