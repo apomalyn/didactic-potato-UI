@@ -60,7 +60,6 @@ class IndexView extends StatelessWidget {
   }
 
   Future<void> _checkIfSignedIn(UserRepository userRepository, BuildContext context) async {
-    print('here');
     if(await userRepository.isSignedIn()) {
       Navigator.pushReplacementNamed(context, RouterPaths.HOME);
     }

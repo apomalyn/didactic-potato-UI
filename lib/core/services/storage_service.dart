@@ -1,3 +1,4 @@
+// FLUTTER AND THIRD-PARTIES
 import 'dart:async';
 import 'dart:html';
 import 'package:firebase/firebase.dart' as Firebase;
@@ -8,6 +9,7 @@ class StorageService {
   /// depends on the extension of the file.
   /// @param file to upload
   /// @param filename should be the uuid of the User followed by the extension of the file
+  /// @return bool - true if the upload succeed
   Future<bool> uploadFile(File file, {String filename}) async {
     try {
       var path =

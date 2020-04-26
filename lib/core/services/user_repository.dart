@@ -33,7 +33,6 @@ class UserRepository {
       _userController.add(fetchedUserInfo);
       return true;
     }
-    print('and false');
     return false;
   }
 

@@ -1,29 +1,33 @@
 // FLUTTER AND THIRD-PARTIES
-import 'package:UI/core/constants/constants.dart';
-import 'package:UI/core/models/tag.dart';
-import 'package:UI/ui/widgets/search_text_field.dart';
+import 'dart:async';
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 // MODELS AND VIEW MODEL
-import 'package:UI/core/models/user.dart';
 import 'package:UI/core/viewmodels/account_view_model.dart';
 import 'package:UI/core/models/student.dart';
+import 'package:UI/core/models/tag.dart';
 
 // WIDGETS
 import 'package:UI/ui/views/base_widget.dart';
 import 'package:UI/ui/widgets/tag_chip.dart';
+import 'package:UI/ui/widgets/search_text_field.dart';
 
 class AccountView extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return BaseWidget<AccountViewModel>(
       model: AccountViewModel(
-          api: Provider.of(context), user: Provider.of(context)),
+          api: Provider.of(context), storageService: Provider.of(context), user: Provider.of(context)),
       builder: (context, model, child) => Scaffold(
-          appBar: AppBar(),
+          appBar: AppBar(
+            automaticallyImplyLeading: !model.busy,
+          ),
           body: SafeArea(
-            child: Row(
+            child: model.busy ? Center(child: CircularProgressIndicator()) : Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
@@ -39,7 +43,20 @@ class AccountView extends StatelessWidget {
                           SizedBox(height: 50.0),
                           _buildJobType(model),
                           SizedBox(height: 30.0),
-                          _buildTags(model)
+                          _buildTags(model),
+                          SizedBox(height: 30.0),
+                          RaisedButton(
+                            child: Text('Upload your picture'),
+                            onPressed: () async {
+                              File file = await getFile();
+                              try {
+                                print('Wooloooo');
+                                model.uploadToFirebase(file);
+                              } catch (e) {
+                                print (e);
+                              }
+                            },
+                          )
                         ],
                       ),
                     ),
@@ -96,7 +113,8 @@ class AccountView extends StatelessWidget {
             width: 400.0,
             child: Wrap(
               children: <Widget>[
-                SearchTextField(onTap: (Tag value) => model.handleAddTag(value)),
+                SearchTextField(
+                    onTap: (Tag value) => model.handleAddTag(value)),
                 for (final chip in chips)
                   Padding(
                     padding: const EdgeInsets.all(4),
@@ -106,5 +124,24 @@ class AccountView extends StatelessWidget {
             )),
       ],
     );
+  }
+
+  /// Open dialog to choose a file from the PC of the user than upload the file selected
+  Future<File> getFile() {
+    final completer = new Completer<File>();
+    final InputElement input = document.createElement('input');
+    input
+      ..type = 'file'
+      ..accept = 'image/*';
+    input.onChange.listen((e) async {
+      final List<File> files = input.files;
+      final reader = new FileReader();
+      reader.readAsDataUrl(files[0]);
+      reader.onError.listen((error) => completer.completeError(error));
+      await reader.onLoad.first;
+      completer.complete(files[0]);
+    });
+    input.click();
+    return completer.future;
   }
 }
