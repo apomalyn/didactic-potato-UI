@@ -19,20 +19,24 @@ class AccountViewModel extends BaseViewModel {
   Api _api;
   StorageService _storageService;
 
-  User _user;
-  User get user => _user;
+  Student _user;
+  Student get user => _user;
+
+  bool _isModified = false;
+  bool get isModified => _isModified;
 
   AccountViewModel({@required Api api, @required StorageService storageService, @required User user})  {
     _api = api;
     _storageService = storageService;
-    _user = user;
+    _user = user as Student;
   }
 
   /// Update the type of job
   /// @param [JobType] new value
   /// WARNING DON'T UPDATE THE USER ON THE DATABASE
   void handleSearchingForChange(JobType type) {
-    (user as Student).searchingFor = type;
+    _user.searchingFor = type;
+    _isModified = true;
     notifyListeners();
   }
 
@@ -40,7 +44,8 @@ class AccountViewModel extends BaseViewModel {
   /// @param [Tag] tag to remove
   /// WARNING DON'T UPDATE THE USER ON THE DATABASE
   void handleDeletionTag(Tag toRemove) {
-    (user as Student).tags.remove(toRemove);
+    _isModified = true;
+    _user.tags.remove(toRemove);
     notifyListeners();
   }
 
@@ -48,10 +53,22 @@ class AccountViewModel extends BaseViewModel {
   /// @param [Tag] tag to add
   /// WARNING DON'T UPDATE THE USER ON THE DATABASE
   void handleAddTag(Tag value) {
-    if(!(_user as Student).tags.contains(value)){
-      (_user as Student).tags.add(value);
+    if(!_user.tags.contains(value)){
+      _user.tags.add(value);
+      _isModified = true;
       notifyListeners();
     }
+  }
+
+  /// Save the changes done by the user
+  /// @return bool - true if the save succeed
+  Future<bool> save() async {
+    setBusy(true);
+    bool success = await _api.addStudent(user: _user);
+    _isModified = false;
+    setBusy(false);
+
+    return success;
   }
 
   /// Call the service to upload a file to Firebase
@@ -66,7 +83,7 @@ class AccountViewModel extends BaseViewModel {
   }
 
   List<Tag> getTags() {
-    return (_user as Student).tags;
+    return _user.tags;
   }
 
   Future<String> getAccountImage() async {

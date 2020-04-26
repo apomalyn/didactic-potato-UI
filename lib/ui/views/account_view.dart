@@ -16,7 +16,6 @@ import 'package:UI/ui/views/base_widget.dart';
 import 'package:UI/ui/widgets/tag_chip.dart';
 import 'package:UI/ui/widgets/search_text_field.dart';
 import 'package:toast/toast.dart';
-import 'package:UI/ui/widgets/account_avatar.dart';
 
 class AccountView extends StatelessWidget {
   @override
@@ -52,7 +51,11 @@ class AccountView extends StatelessWidget {
                                   onPressed: () async {
                                     File file = await getFile();
                                     try {
-                                      model.uploadToFirebase(file);
+                                      bool res = await model.uploadToFirebase(file);
+                                      if(res)
+                                        Toast.show("Your picture is now uploaded!", context, duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+                                      else
+                                        Toast.show("Sorry, something went wrong. Try again later", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
                                     } catch (e) {
                                       Toast.show(
                                           "Something wrong happened...please try later",
@@ -78,7 +81,7 @@ class AccountView extends StatelessWidget {
                                     textAlign: TextAlign.center,
                                     style: TextStyle(fontSize: 30)),
                                 SizedBox(height: 15.0),
-                                (model.user as Student).cv != null
+                                model.user.cv != null
                                     ? Container()
                                     : Container(
                                         child: Text(
@@ -86,13 +89,13 @@ class AccountView extends StatelessWidget {
                                       ),
                                 SizedBox(height: 15.0),
                                 RaisedButton(
-                                  child: Text('Upload your picture'),
+                                  child: Text('Upload your CV'),
                                   onPressed: () async {
                                     File file = await getFile(isImage: false);
                                     try {
                                       model.uploadToFirebase(file);
+                                      Toast.show("Your CV is now uploaded!", context, duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
                                     } catch (e) {
-                                      print(e);
                                       Toast.show(
                                           "Something wrong happened...please try later",
                                           context,
@@ -108,7 +111,13 @@ class AccountView extends StatelessWidget {
                       ]),
               ),
               floatingActionButton: FloatingActionButton.extended(
-                  onPressed: () {}, label: Text('Save')),
+                  onPressed: model.isModified ? () async {
+                    bool success = await model.save();
+                    if(success)
+                      Toast.show("Changes saved", context, duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+                    else
+                      Toast.show("Sorry, something went wrong. Try again later", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                    }: null, label: Text('Save')),
             ));
   }
 
@@ -118,7 +127,7 @@ class AccountView extends StatelessWidget {
     JobType.values.forEach((element) {
       chips.add(FilterChip(
         label: Text(element.toString().split('.').last),
-        selected: element == (model.user as Student).searchingFor,
+        selected: element == model.user.searchingFor,
         onSelected: (_) => model.handleSearchingForChange(element),
       ));
     });
