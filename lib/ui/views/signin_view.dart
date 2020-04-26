@@ -9,6 +9,7 @@ import 'package:UI/core/viewmodels/sign_in_view_model.dart';
 import 'package:UI/ui/utils/theme.dart' as AppColor;
 import 'package:UI/ui/views/base_widget.dart';
 import 'package:UI/core/constants/router_paths.dart';
+import 'package:toast/toast.dart';
 
 class SignInView extends StatefulWidget {
   @override
@@ -17,8 +18,11 @@ class SignInView extends StatefulWidget {
 
 class _SignInState extends State<SignInView> {
   final _formKey = GlobalKey<FormState>();
-  String _password;
   String _email;
+  String _password;
+
+  bool _isRegistering = false;
+  bool _registerComplete = false;
 
   bool _enableBtn = false;
 
@@ -38,7 +42,10 @@ class _SignInState extends State<SignInView> {
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
                     child: model.busy
-                        ? Center(child: CircularProgressIndicator())
+                        ? Container(
+                            width: 200,
+                            height: 200,
+                            child: Center(child: CircularProgressIndicator()))
                         : Column(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -51,13 +58,19 @@ class _SignInState extends State<SignInView> {
                                     color: AppColor.sandy),
                               ),
                               SizedBox(height: 75),
-                              _buildForm(model),
+                              _registerComplete ?
+                                  Text("Please check your email to verify your account")
+                                  :
+                              _isRegistering
+                                  ? _buildRegisterForm(model)
+                                  : _buildSignInForm(model),
                               SizedBox(height: 30),
                               _buildSignInWithButton('Google', () async {
                                 var loginSuccess =
                                     await model.signInWithGoogle();
                                 if (loginSuccess) {
-                                  Navigator.pushNamed(context, RouterPaths.HOME);
+                                  Navigator.pushNamed(
+                                      context, RouterPaths.HOME);
                                 }
                               }),
                               SizedBox(height: 10),
@@ -65,7 +78,8 @@ class _SignInState extends State<SignInView> {
                                 var loginSuccess =
                                     await model.signInWithGithub();
                                 if (loginSuccess) {
-                                  Navigator.pushNamed(context, RouterPaths.HOME);
+                                  Navigator.pushNamed(
+                                      context, RouterPaths.HOME);
                                 }
                               })
                             ],
@@ -88,7 +102,7 @@ class _SignInState extends State<SignInView> {
     );
   }
 
-  Widget _buildForm(SignInViewModel model) {
+  Widget _buildSignInForm(SignInViewModel model) {
     return Form(
       key: _formKey,
       onChanged: () =>
@@ -138,9 +152,89 @@ class _SignInState extends State<SignInView> {
                   child: Text('Register'),
                   color: AppColor.persian,
                   elevation: 5,
-                  onPressed: () =>
-                      Navigator.pushNamed(context, RouterPaths.ON_BOARDING),
+                  onPressed: () => setState(() {
+                    _isRegistering = true;
+                  }),
                 )
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRegisterForm(SignInViewModel model) {
+    return Form(
+      key: _formKey,
+      onChanged: () =>
+          setState(() => _enableBtn = _formKey.currentState.validate()),
+      child: Container(
+        width: 400,
+        child: Column(
+          children: <Widget>[
+            TextFormField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Email',
+              ),
+              validator: _validateEmail,
+              onSaved: (value) => _email = value,
+            ),
+            SizedBox(height: 10),
+            TextFormField(
+              obscureText: true,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Password',
+              ),
+              validator: _validatePassword,
+              onSaved: (value) => _password = value,
+            ),
+            SizedBox(height: 10),
+            TextFormField(
+              obscureText: true,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Confirm your password',
+              ),
+              validator: _validateConfirmPassword,
+            ),
+            SizedBox(height: 10),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                RaisedButton(
+                  child: Text('Sign in'),
+                  color: AppColor.persian,
+                  elevation: 5,
+                  onPressed: () => setState(() {
+                    _isRegistering = false;
+                  }),
+                ),
+                SizedBox(width: 20),
+                RaisedButton(
+                    child: Text('Register'),
+                    color: AppColor.persian,
+                    elevation: 5,
+                    onPressed: _enableBtn
+                        ? () async {
+                            var registerSucceed =
+                                await model.register(_email, _password);
+                            if (registerSucceed) {
+                              setState(() {
+                                _registerComplete = true;
+                              });
+                            } else {
+                              setState(() {
+                                _isRegistering = false;
+                              });
+                              Toast.show("Email already used", context,
+                                  duration: Toast.LENGTH_LONG,
+                                  gravity: Toast.CENTER);
+                            }
+                          }
+                        : null)
               ],
             )
           ],
@@ -161,7 +255,16 @@ class _SignInState extends State<SignInView> {
   }
 
   String _validatePassword(String value) {
-    if (value.length == 0) return 'Please enter your password.';
+    if (value.length == 0)
+      return 'Please enter your password.';
+    else if (value.length < 8)
+      return 'Your password should contain at leats 8 characteres';
+    return null;
+  }
+
+  String _validateConfirmPassword(String value) {
+    if (value.length == 0 && _password.length == 0) return null;
+    if (value != _password) return 'Please enter the same password';
     return null;
   }
 }

@@ -9,16 +9,16 @@ import 'package:UI/core/viewmodels/base_view_model.dart';
 
 
 class SignInViewModel extends BaseViewModel {
-  UserRepository _authenticationService;
+  UserRepository _userRepository;
 
   SignInViewModel({@required UserRepository authenticationService}) {
-    _authenticationService = authenticationService;
+    _userRepository = authenticationService;
   }
 
   /// Try to sign in the user using a Google account
   Future<bool> signInWithGoogle() async {
     setBusy(true);
-    var success = await _authenticationService.signInWithGoogle();
+    var success = await _userRepository.signInWithGoogle();
     setBusy(false);
 
     return success;
@@ -27,7 +27,7 @@ class SignInViewModel extends BaseViewModel {
   /// Try to sign in the user using a Github account
   Future<bool> signInWithGithub() async {
     setBusy(true);
-    // TODO var success = await _authenticationService.signInWithGoogle();
+    // TODO var success = await _authenticationService.signInWithGithub();
     setBusy(false);
 
     return false;
@@ -36,9 +36,23 @@ class SignInViewModel extends BaseViewModel {
   /// Try to sign in the user using a email/password
   Future<bool> signInWithEmail(String email, String password) async {
     setBusy(true);
-    var success = await _authenticationService.signInWithEmail(email, password);
+    var success = await _userRepository.signInWithEmail(email, password);
     setBusy(false);
 
     return success;
+  }
+
+  Future<bool> register(String email, String password) async {
+    setBusy(true);
+    try {
+      var success = await _userRepository.registerUser(email, password);
+      setBusy(false);
+    } catch (e) {
+      print(e.code);
+      if(e.code == "auth/email-already-in-use") {
+        setBusy(false);
+        return false;
+      }
+    }
   }
 }

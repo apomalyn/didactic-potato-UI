@@ -63,9 +63,17 @@ class UserRepository {
       _userController.add(fetchedUserInfo);
       return true;
     } catch (e) {
-      print(e);
       return false;
     }
+  }
+
+  /// Register a new user
+  /// @throw [ERROR_EMAIL_ALREADY_IN_USE] if the user is already register with this email
+  Future<bool> registerUser(String email, String password) async {
+    var res = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+    res.user.sendEmailVerification();
+
+    return true;
   }
 
   Future<void> logout() async {
