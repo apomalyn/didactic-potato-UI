@@ -216,8 +216,9 @@ class _SignInState extends State<SignInView> {
                         ? () async {
                             var registerSucceed =
                                 await model.register(_email, _password);
-                            if(registerSucceed) {}
-                            else {
+                            if(registerSucceed) {
+
+                            } else {
                               setState(() {
                                 _isRegistering = false;
                               });
@@ -246,6 +247,7 @@ class _SignInState extends State<SignInView> {
 
   String _validatePassword(String value) {
     if (value.length == 0) return 'Please enter your password.';
+    else if(value.length < 8) return 'Your password should contain at leats 8 characteres';
     return null;
   }
 
