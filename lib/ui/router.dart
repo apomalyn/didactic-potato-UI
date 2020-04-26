@@ -21,8 +21,8 @@ class Router {
 
         return MaterialPageRoute(
             builder: (_) => Scaffold(
-                  body: Center(
-                      child: Column(
+              body: Center(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Provider.of<User>(_) == null ? Text(""):Text("Hello ${Provider.of<User>(_).firstname}"),
@@ -43,7 +43,7 @@ class Router {
                       )
                     ],
                   )),
-                ));
+            ));
       case RouterPaths.SIGN_IN:
         return MaterialPageRoute(builder: (_) => SignInView());
       case RouterPaths.INDEX:
@@ -55,10 +55,10 @@ class Router {
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(
-                  body: Center(
-                      child: Text(
-                          'Oups! There no page corresponding to ${routeSettings.name}')),
-                ));
+              body: Center(
+                  child: Text(
+                      'Oups! There no page corresponding to ${routeSettings.name}')),
+            ));
     }
   }
 }
