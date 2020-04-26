@@ -6,7 +6,7 @@ class Tag {
 
   final String description;
 
-  Tag({@required this.name, @required this.description});
+  Tag({@required this.name, this.description});
 
   factory Tag.fromJson(Map<String, dynamic> json) {
     return Tag(name: json['name'], description: json['description']);
