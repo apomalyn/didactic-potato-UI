@@ -2,7 +2,6 @@
 import 'package:UI/core/constants/constants.dart';
 import 'package:UI/core/models/tag.dart';
 import 'package:UI/ui/widgets/search_text_field.dart';
-import 'package:floating_search_bar/floating_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
