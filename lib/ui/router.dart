@@ -25,6 +25,11 @@ class Router {
                         child: Text("Sign In"),
                         onPressed: () => Navigator.pushNamed(
                             _, RouterPaths.SIGN_IN),
+                      ),
+                      RaisedButton(
+                        child: Text("Index"),
+                        onPressed: () => Navigator.pushNamed(
+                            _, RouterPaths.INDEX),
                       )
                     ],
                   )),
