@@ -7,6 +7,7 @@ import 'package:UI/core/constants/router_paths.dart';
 // VIEWS
 import 'package:UI/ui/views/signin_view.dart';
 import 'package:UI/ui/views/index_view.dart';
+import 'package:UI/ui/views/register_view.dart';
 
 /// Router of the application
 /// See [RouterPaths] for the list of available routes
@@ -36,6 +37,12 @@ class Router {
           backgroundColor: Color(0xFFf4a261),
           body: IndexView(),
         ));
+      case RouterPaths.ON_BOARDING:
+        return MaterialPageRoute(
+            builder: (_) => Scaffold(
+              backgroundColor: Color(0xFFf4a261),
+              body: RegisterView(),
+            ));
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(
