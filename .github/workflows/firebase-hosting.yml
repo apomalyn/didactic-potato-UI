@@ -19,6 +19,9 @@ jobs:
       - name: Downloading Flutter dependencies 
         run: flutter pub get
 
+      - name: Enable Flutter for web
+        run: flutter config --enable-web
+
       - name: Building app
         run: flutter build web
   deploy:
