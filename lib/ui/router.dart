@@ -1,19 +1,34 @@
-/// FLUTTER AND THIRD PARTIES
+// FLUTTER AND THIRD PARTIES
 import 'package:flutter/material.dart';
 
-/// CONSTANTS
+// CONSTANTS
 import 'package:UI/core/constants/router_paths.dart';
 
+// VIEWS
+import 'package:UI/ui/views/signin_view.dart';
+
 /// Router of the application
-/// See also [RouterPaths]
+/// See [RouterPaths] for the list of available routes
 class Router {
   static Route<dynamic> generateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
       case RouterPaths.HOME:
         return MaterialPageRoute(
             builder: (_) => Scaffold(
-                  body: Center(child: Text('Home')),
+                  body: Center(
+                      child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      RaisedButton(
+                        child: Text("Sign In"),
+                        onPressed: () => Navigator.pushNamed(
+                            _, RouterPaths.SIGN_IN),
+                      )
+                    ],
+                  )),
                 ));
+      case RouterPaths.SIGN_IN:
+        return MaterialPageRoute(builder: (_) => SignInView());
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(
