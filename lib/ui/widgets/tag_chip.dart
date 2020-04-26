@@ -15,7 +15,7 @@ class TagChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return InputChip(
       label: Text(tag.name),
-      deleteIcon: Icon(Icons.close),
+      deleteIcon: Icon(Icons.cancel, color: Colors.black54),
       onDeleted: onDeleted,
       onPressed: onDeleted,
     );
