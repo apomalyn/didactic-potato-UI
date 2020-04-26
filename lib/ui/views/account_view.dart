@@ -1,10 +1,9 @@
 // FLUTTER AND THIRD-PARTIES
 import 'dart:async';
+
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html';
-import 'package:UI/ui/widgets/account_avatar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_fullpdfview/flutter_fullpdfview.dart';
 import 'package:provider/provider.dart';
 
 // MODELS AND VIEW MODEL
@@ -17,94 +16,100 @@ import 'package:UI/ui/views/base_widget.dart';
 import 'package:UI/ui/widgets/tag_chip.dart';
 import 'package:UI/ui/widgets/search_text_field.dart';
 import 'package:toast/toast.dart';
+import 'package:UI/ui/widgets/account_avatar.dart';
 
 class AccountView extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return BaseWidget<AccountViewModel>(
-      model: AccountViewModel(
-          api: Provider.of(context), storageService: Provider.of(context), user: Provider.of(context)),
-      builder: (context, model, child) => Scaffold(
-          appBar: AppBar(
-            automaticallyImplyLeading: !model.busy,
-          ),
-          body: SafeArea(
-            child: model.busy ? Center(child: CircularProgressIndicator()) : Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Container(
-                    child: Padding(
-                      padding: const EdgeInsets.all(100.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Text('Hello ${model.user.firstname}!',
-                              style: TextStyle(fontSize: 70)),
-                          SizedBox(height: 50.0),
-                          _buildJobType(model),
-                          SizedBox(height: 30.0),
-                          _buildTags(model),
-                          SizedBox(height: 30.0),
-                          RaisedButton(
-                            child: Text('Upload your picture'),
-                            onPressed: () async {
-                              File file = await getFile();
-                              try {
-                                model.uploadToFirebase(file);
-                              } catch (e) {
-                                Toast.show("Something wrong happened...please try later", context,
-                                    duration: Toast.LENGTH_LONG,
-                                    gravity: Toast.CENTER);
-                                print (e);
-                              }
-                            },
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  Container(
-                     child: Padding(
-                       padding: EdgeInsets.all(100.0),
-                       child: Column(
-                         mainAxisAlignment: MainAxisAlignment.center,
-                         children: <Widget>[
-                           Text("Your CV",
-                               textAlign: TextAlign.center, style: TextStyle(fontSize: 30)),
-                           SizedBox(height: 15.0),
-                           (model.user as Student).cv != null ? Container(
-                             child: PDFView(
-                               filePath: (model.user as Student).cv,
-                             ),
-                           ):Container(
-                             child: Text("You didn't upload your CV..."),
-                           ),
-                           SizedBox(height: 15.0),
-                           RaisedButton(
-                             child: Text('Upload your picture'),
-                             onPressed: () async {
-                               File file = await getFile(isImage: false);
-                               try {
-                                 model.uploadToFirebase(file);
-                               } catch (e) {
-                                 print (e);
-                                 Toast.show("Something wrong happened...please try later", context,
-                                     duration: Toast.LENGTH_LONG,
-                                     gravity: Toast.CENTER);
-                               }
-                             },
-                           )
-
-                         ],
-                       ),
-                     ),
-                  )
-                ]),
-          )),
-    );
+        model: AccountViewModel(
+            api: Provider.of(context),
+            storageService: Provider.of(context),
+            user: Provider.of(context)),
+        builder: (context, model, child) => Scaffold(
+              appBar: AppBar(
+                automaticallyImplyLeading: !model.busy,
+              ),
+              body: SafeArea(
+                child: model.busy
+                    ? Center(child: CircularProgressIndicator())
+                    : Row(children: <Widget>[
+                        Container(
+                          child: Padding(
+                            padding: const EdgeInsets.all(100.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text('Hello ${model.user.firstname}!',
+                                    style: TextStyle(fontSize: 70)),
+                                SizedBox(height: 50.0),
+                                _buildJobType(model),
+                                SizedBox(height: 30.0),
+                                _buildTags(model),
+                                SizedBox(height: 30.0),
+                                RaisedButton(
+                                  child: Text('Upload your picture'),
+                                  onPressed: () async {
+                                    File file = await getFile();
+                                    try {
+                                      model.uploadToFirebase(file);
+                                    } catch (e) {
+                                      Toast.show(
+                                          "Something wrong happened...please try later",
+                                          context,
+                                          duration: Toast.LENGTH_LONG,
+                                          gravity: Toast.CENTER);
+                                      print(e);
+                                    }
+                                  },
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Padding(
+                            padding: EdgeInsets.all(100.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text("Your CV",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: 30)),
+                                SizedBox(height: 15.0),
+                                (model.user as Student).cv != null
+                                    ? Container()
+                                    : Container(
+                                        child: Text(
+                                            "You didn't upload your CV..."),
+                                      ),
+                                SizedBox(height: 15.0),
+                                RaisedButton(
+                                  child: Text('Upload your picture'),
+                                  onPressed: () async {
+                                    File file = await getFile(isImage: false);
+                                    try {
+                                      model.uploadToFirebase(file);
+                                    } catch (e) {
+                                      print(e);
+                                      Toast.show(
+                                          "Something wrong happened...please try later",
+                                          context,
+                                          duration: Toast.LENGTH_LONG,
+                                          gravity: Toast.CENTER);
+                                    }
+                                  },
+                                )
+                              ],
+                            ),
+                          ),
+                        )
+                      ]),
+              ),
+              floatingActionButton: FloatingActionButton.extended(
+                  onPressed: () {}, label: Text('Save')),
+            ));
   }
 
   /// Build and handle type of jobs
@@ -173,7 +178,7 @@ class AccountView extends StatelessWidget {
     final InputElement input = document.createElement('input');
     input
       ..type = 'file'
-      ..accept = isImage ? 'image/*':'application/pdf';
+      ..accept = isImage ? 'image/*' : 'application/pdf';
     input.onChange.listen((e) async {
       final List<File> files = input.files;
       final reader = new FileReader();
