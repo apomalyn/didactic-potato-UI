@@ -1,4 +1,8 @@
+import 'package:UI/core/constants/router_paths.dart';
+import 'package:UI/core/models/user.dart';
 import 'package:flutter/material.dart';
+import 'package:UI/ui/utils/theme.dart' as AppColor;
+import 'package:provider/provider.dart';
 
 class AccountRegisterForm extends StatefulWidget {
   @override
@@ -14,48 +18,102 @@ class _AccountRegisterFormState extends State<AccountRegisterForm> {
 
   @override
   Widget build(BuildContext context) {
+    // Ideally a Stepper should be there, but lack of time made that it cannot be done. 😅
     return Form(
-      key: _formKey,
-      child: Center(
-        child: Card(
-          child: Container(
-            width: 700,
-            height: 500,
-            child: Column(
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 48.0, top: 32.0),
-                        child: Text(
-                          "Nice to meet you!",
-                          style: TextStyle(
-                            fontSize: 48.0,
-                            fontWeight: FontWeight.bold
+        key: _formKey,
+        child: Center(
+          child: Card(
+            child: Container(
+              width: 600,
+              height: 300,
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Align(
+                          alignment: Alignment.topCenter,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 48.0, top: 32.0),
+                            child: Text(
+                              "Nice to meet you!",
+                              style: TextStyle(
+                                  fontSize: 48.0,
+                                  fontWeight: FontWeight.bold
+                              ),
+                            ),
+                          )
+                      ),
+                      SizedBox(height: 15.0),
+                    ],
+                  ),
+                  Container(
+                    child: Row(
+                      children: <Widget>[
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 48.0, top: 32.0),
+                            child: Container(
+                              width: 200,
+                              child: TextFormField(
+                                validator: (value) => _validateNames(value),
+                                onSaved: (value) => _firstName = value,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'First Name',
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                      )
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 16.0, top: 32.0),
+                            child: Container(
+                              width: 200,
+                              child: TextFormField(
+                                validator: (value) => _validateNames(value),
+                                onSaved: (value) => _lastName = value,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Last Name',
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    SizedBox(height: 15.0),
-                  ],
-                ),
-                TextFormField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Email',
                   ),
-                ),
-              ],
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 52.0, right: 16.0),
+                      child: MaterialButton(
+                        onPressed: () {
+                          if (_formKey.currentState.validate()) {
+                            User _user = Provider.of<User>(context);
+                            _user.firstname = _firstName;
+                            _user.lastname = _lastName;
+                            Navigator.pushNamed(context, RouterPaths.ON_BOARDING_TAGS);
+                          }
+                        },
+                        color: AppColor.persian,
+                        child: Text(
+                          "Next Step",
+                          style: TextStyle(color: Colors.white, fontSize: 16.0),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
-        ),
-      )
+        )
     );
   }
-
-
 
 }
 

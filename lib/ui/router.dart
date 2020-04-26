@@ -8,7 +8,7 @@ import 'package:UI/core/constants/router_paths.dart';
 // VIEWS
 import 'package:UI/ui/views/signin_view.dart';
 import 'package:UI/ui/views/index_view.dart';
-import 'package:UI/ui/views/on_boarding_view.dart';
+import 'package:UI/ui/views/on_boarding_account_view.dart';
 import 'package:UI/ui/views/account_view.dart';
 import 'package:provider/provider.dart';
 
@@ -48,8 +48,8 @@ class Router {
         return MaterialPageRoute(builder: (_) => SignInView());
       case RouterPaths.INDEX:
         return MaterialPageRoute(builder: (_) => IndexView());
-      case RouterPaths.ON_BOARDING:
-        return MaterialPageRoute(builder: (_) => OnBoardingView());
+      case RouterPaths.ON_BOARDING_ACCOUNT:
+        return MaterialPageRoute(builder: (_) => OnBoardingAccountView());
       case RouterPaths.ACCOUNT:
         return MaterialPageRoute(builder: (_) => AccountView());
       default:
