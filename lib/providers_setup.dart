@@ -18,7 +18,6 @@ List<SingleChildWidget> providers = [
 /// Services completely independent
 List<SingleChildWidget> independentServices = [
   Provider.value(value: Api()),
-  Provider.value(value: UserRepository())
 ];
 
 /// Services that relies on other services
@@ -34,5 +33,6 @@ List<SingleChildWidget> uiConsummableProviders = [
   StreamProvider<User>(
     create: (context) =>
     Provider.of<UserRepository>(context, listen: false).user,
+    initialData: null,
   )
 ];

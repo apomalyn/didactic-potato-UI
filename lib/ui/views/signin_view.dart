@@ -31,63 +31,63 @@ class _SignInState extends State<SignInView> {
     return BaseWidget<SignInViewModel>(
         model: SignInViewModel(authenticationService: Provider.of(context)),
         builder: (context, model, child) => Scaffold(
-              appBar: AppBar(
-                backgroundColor: Colors.transparent,
-                iconTheme: IconThemeData(size: 512),
-                elevation: 0,
-              ),
-              body: Center(
-                child: Card(
-                  elevation: 5,
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
-                    child: model.busy
-                        ? Container(
-                            width: 200,
-                            height: 200,
-                            child: Center(child: CircularProgressIndicator()))
-                        : Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Container(
-                                width: 100,
-                                height: 100,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColor.sandy),
-                              ),
-                              SizedBox(height: 75),
-                              _registerComplete ?
-                                  Text("Please check your email to verify your account")
-                                  :
-                              _isRegistering
-                                  ? _buildRegisterForm(model)
-                                  : _buildSignInForm(model),
-                              SizedBox(height: 30),
-                              _buildSignInWithButton('Google', () async {
-                                var loginSuccess =
-                                    await model.signInWithGoogle();
-                                if (loginSuccess) {
-                                  Navigator.pushNamed(
-                                      context, RouterPaths.HOME);
-                                }
-                              }),
-                              SizedBox(height: 10),
-                              _buildSignInWithButton('Github', () async {
-                                var loginSuccess =
-                                    await model.signInWithGithub();
-                                if (loginSuccess) {
-                                  Navigator.pushNamed(
-                                      context, RouterPaths.HOME);
-                                }
-                              })
-                            ],
-                          ),
-                  ),
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            iconTheme: IconThemeData(size: 512),
+            elevation: 0,
+          ),
+          body: Center(
+            child: Card(
+              elevation: 5,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+                child: model.busy
+                    ? Container(
+                    width: 200,
+                    height: 200,
+                    child: Center(child: CircularProgressIndicator()))
+                    : Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppColor.sandy),
+                    ),
+                    SizedBox(height: 75),
+                    _registerComplete ?
+                    Text("Please check your email to verify your account")
+                        :
+                    _isRegistering
+                        ? _buildRegisterForm(model)
+                        : _buildSignInForm(model),
+                    SizedBox(height: 30),
+                    _buildSignInWithButton('Google', () async {
+                      var loginSuccess =
+                      await model.signInWithGoogle();
+                      if (loginSuccess) {
+                        Navigator.pushNamed(
+                            context, RouterPaths.HOME);
+                      }
+                    }),
+                    SizedBox(height: 10),
+                    _buildSignInWithButton('Github', () async {
+                      var loginSuccess =
+                      await model.signInWithGithub();
+                      if (loginSuccess) {
+                        Navigator.pushNamed(
+                            context, RouterPaths.HOME);
+                      }
+                    })
+                  ],
                 ),
               ),
-            ));
+            ),
+          ),
+        ));
   }
 
   Widget _buildSignInWithButton(String company, Function callback) {
@@ -138,12 +138,12 @@ class _SignInState extends State<SignInView> {
                   color: AppColor.persian,
                   onPressed: _enableBtn
                       ? () async {
-                          var loginSuccess =
-                              await model.signInWithEmail(_email, _password);
-                          if (loginSuccess) {
-                            Navigator.pushNamed(context, RouterPaths.HOME);
-                          }
-                        }
+                    var loginSuccess =
+                    await model.signInWithEmail(_email, _password);
+                    if (loginSuccess) {
+                      Navigator.pushNamed(context, RouterPaths.HOME);
+                    }
+                  }
                       : null,
                   elevation: 5,
                 ),
@@ -219,21 +219,21 @@ class _SignInState extends State<SignInView> {
                     elevation: 5,
                     onPressed: _enableBtn
                         ? () async {
-                            var registerSucceed =
-                                await model.register(_email, _password);
-                            if (registerSucceed) {
-                              setState(() {
-                                _registerComplete = true;
-                              });
-                            } else {
-                              setState(() {
-                                _isRegistering = false;
-                              });
-                              Toast.show("Email already used", context,
-                                  duration: Toast.LENGTH_LONG,
-                                  gravity: Toast.CENTER);
-                            }
-                          }
+                      var registerSucceed =
+                      await model.register(_email, _password);
+                      if (registerSucceed) {
+                        setState(() {
+                          _registerComplete = true;
+                        });
+                      } else {
+                        setState(() {
+                          _isRegistering = false;
+                        });
+                        Toast.show("Email already used", context,
+                            duration: Toast.LENGTH_LONG,
+                            gravity: Toast.CENTER);
+                      }
+                    }
                         : null)
               ],
             )
@@ -245,7 +245,7 @@ class _SignInState extends State<SignInView> {
 
   String _validateEmail(String value) {
     RegExp regExp =
-        RegExp(r'([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})');
+    RegExp(r'([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})');
 
     if (value.length == 0)
       return 'Please enter your email.';
