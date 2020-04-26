@@ -47,7 +47,7 @@ class IndexView extends StatelessWidget {
                       color: Color(0xFF2a9d8f),
                       child: Text(
                         "Getting Started!",
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.white, fontSize: 28.0),
                       ),
                     )
                 )
