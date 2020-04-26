@@ -1,8 +1,17 @@
+// FLUTTER AND THIRD-PARTIES
+import 'package:UI/core/constants/router_paths.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+// SERVICES
+import 'package:UI/core/services/user_repository.dart';
 
 class IndexView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    _checkIfSignedIn(Provider.of<UserRepository>(context), context);
+
     return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -33,7 +42,7 @@ class IndexView extends StatelessWidget {
                 padding: EdgeInsets.only(top: 32.0),
                 child: MaterialButton(
                   height: 64.0,
-                  onPressed: () {},
+                  onPressed: () => Navigator.pushNamed(context, RouterPaths.SIGN_IN),
                   color: Color(0xFF2a9d8f),
                   child: Text(
                     "Getting Started!",
@@ -46,5 +55,12 @@ class IndexView extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> _checkIfSignedIn(UserRepository userRepository, BuildContext context) async {
+    print('here');
+    if(await userRepository.isSignedIn()) {
+      Navigator.pushReplacementNamed(context, RouterPaths.HOME);
+    }
   }
 }

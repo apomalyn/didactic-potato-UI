@@ -25,6 +25,18 @@ class UserRepository {
         _auth = FirebaseAuth.instance,
         _googleSignIn = GoogleSignIn();
 
+  Future<bool> isSignedIn() async {
+    var currentUser = await _auth.currentUser();
+    if(currentUser != null) {
+      User fetchedUserInfo = await _api.getUserInfo(uuid: currentUser.uid);
+
+      _userController.add(fetchedUserInfo);
+      return true;
+    }
+    print('and false');
+    return false;
+  }
+
   /// Sign in with the Google Account
   /// @return true if the login succeed
   Future<bool> signInWithGoogle() async {
