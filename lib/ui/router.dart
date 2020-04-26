@@ -1,6 +1,7 @@
 // FLUTTER AND THIRD PARTIES
 import 'package:UI/core/models/user.dart';
 import 'package:UI/ui/views/on_boarding_tags_view.dart';
+import 'package:UI/ui/views/on_boarding_user_type.dart';
 import 'package:flutter/material.dart';
 
 // CONSTANTS
@@ -51,6 +52,11 @@ class Router {
                         child: Text("Onboarding tags"),
                         onPressed: () =>
                             Navigator.pushNamed(_, RouterPaths.ON_BOARDING_TAGS),
+                      ),
+                      RaisedButton(
+                        child: Text("Onboarding type"),
+                        onPressed: () =>
+                            Navigator.pushNamed(_, RouterPaths.ON_BOARDING_TYPE),
                       )
                     ],
                   )),
@@ -60,9 +66,11 @@ class Router {
       case RouterPaths.INDEX:
         return MaterialPageRoute(builder: (_) => IndexView());
       case RouterPaths.ON_BOARDING_ACCOUNT:
-        return MaterialPageRoute(builder: (_) => OnBoardingAccountView());
+        return MaterialPageRoute(builder: (_) => OnBoardingAccountView(routeSettings.arguments));
       case RouterPaths.ON_BOARDING_TAGS:
-        return MaterialPageRoute(builder: (_) => OnBoardingTagsView());
+        return MaterialPageRoute(builder: (_) => OnBoardingTagsView(routeSettings.arguments));
+      case RouterPaths.ON_BOARDING_TYPE:
+        return MaterialPageRoute(builder: (_) => OnBoardingUserTypeView());
       case RouterPaths.ACCOUNT:
         return MaterialPageRoute(builder: (_) => AccountView());
       default:
