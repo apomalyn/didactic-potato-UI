@@ -68,4 +68,8 @@ class AccountViewModel extends BaseViewModel {
   List<Tag> getTags() {
     return (_user as Student).tags;
   }
+
+  Future<String> getAccountImage() async {
+    return await _storageService.getUrlLink(_user.uuid);
+  }
 }

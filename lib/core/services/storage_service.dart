@@ -25,4 +25,20 @@ class StorageService {
       return false;
     }
   }
+
+  /// Return the download url of a file
+  /// @param uuid of the user
+  /// @param isAvatar
+  /// @return url
+  Future<String> getUrlLink(String uuid, {bool isAvatar = true}) async {
+    var path = isAvatar ? "images/$uuid.jpeg" : "cv/$uuid.pdf";
+
+    try {
+      Firebase.StorageReference storageReference = Firebase.storage().ref(path);
+      return (await storageReference.getDownloadURL()).toString();
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
 }

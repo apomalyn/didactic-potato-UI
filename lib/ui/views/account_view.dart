@@ -2,7 +2,9 @@
 import 'dart:async';
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html';
+import 'package:UI/ui/widgets/account_avatar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_fullpdfview/flutter_fullpdfview.dart';
 import 'package:provider/provider.dart';
 
 // MODELS AND VIEW MODEL
@@ -14,6 +16,7 @@ import 'package:UI/core/models/tag.dart';
 import 'package:UI/ui/views/base_widget.dart';
 import 'package:UI/ui/widgets/tag_chip.dart';
 import 'package:UI/ui/widgets/search_text_field.dart';
+import 'package:toast/toast.dart';
 
 class AccountView extends StatelessWidget {
 
@@ -28,7 +31,7 @@ class AccountView extends StatelessWidget {
           ),
           body: SafeArea(
             child: model.busy ? Center(child: CircularProgressIndicator()) : Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   Container(
@@ -50,9 +53,11 @@ class AccountView extends StatelessWidget {
                             onPressed: () async {
                               File file = await getFile();
                               try {
-                                print('Wooloooo');
                                 model.uploadToFirebase(file);
                               } catch (e) {
+                                Toast.show("Something wrong happened...please try later", context,
+                                    duration: Toast.LENGTH_LONG,
+                                    gravity: Toast.CENTER);
                                 print (e);
                               }
                             },
@@ -61,6 +66,42 @@ class AccountView extends StatelessWidget {
                       ),
                     ),
                   ),
+                  Container(
+                     child: Padding(
+                       padding: EdgeInsets.all(100.0),
+                       child: Column(
+                         mainAxisAlignment: MainAxisAlignment.center,
+                         children: <Widget>[
+                           Text("Your CV",
+                               textAlign: TextAlign.center, style: TextStyle(fontSize: 30)),
+                           SizedBox(height: 15.0),
+                           (model.user as Student).cv != null ? Container(
+                             child: PDFView(
+                               filePath: (model.user as Student).cv,
+                             ),
+                           ):Container(
+                             child: Text("You didn't upload your CV..."),
+                           ),
+                           SizedBox(height: 15.0),
+                           RaisedButton(
+                             child: Text('Upload your picture'),
+                             onPressed: () async {
+                               File file = await getFile(isImage: false);
+                               try {
+                                 model.uploadToFirebase(file);
+                               } catch (e) {
+                                 print (e);
+                                 Toast.show("Something wrong happened...please try later", context,
+                                     duration: Toast.LENGTH_LONG,
+                                     gravity: Toast.CENTER);
+                               }
+                             },
+                           )
+
+                         ],
+                       ),
+                     ),
+                  )
                 ]),
           )),
     );
@@ -127,12 +168,12 @@ class AccountView extends StatelessWidget {
   }
 
   /// Open dialog to choose a file from the PC of the user than upload the file selected
-  Future<File> getFile() {
+  Future<File> getFile({bool isImage = true}) {
     final completer = new Completer<File>();
     final InputElement input = document.createElement('input');
     input
       ..type = 'file'
-      ..accept = 'image/*';
+      ..accept = isImage ? 'image/*':'application/pdf';
     input.onChange.listen((e) async {
       final List<File> files = input.files;
       final reader = new FileReader();

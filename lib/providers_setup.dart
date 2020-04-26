@@ -24,8 +24,8 @@ List<SingleChildWidget> independentServices = [
 
 /// Services that relies on other services
 List<SingleChildWidget> dependentServices = [
-  ProxyProvider<Api, UserRepository>(
-    update: (_, api, userRepository) => UserRepository(api: api),
+  ProxyProvider2<Api, StorageService, UserRepository>(
+    update: (_, api, storageService, userRepository) => UserRepository(api: api, storageService: storageService),
   )
 ];
 
