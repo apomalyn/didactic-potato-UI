@@ -5,6 +5,7 @@ import 'package:provider/single_child_widget.dart';
 /// SERVICES
 import 'core/services/api.dart';
 import 'package:UI/core/services/user_repository.dart';
+import 'package:UI/core/services/storage_service.dart';
 
 /// MODELS
 import 'package:UI/core/models/user.dart';
@@ -18,6 +19,7 @@ List<SingleChildWidget> providers = [
 /// Services completely independent
 List<SingleChildWidget> independentServices = [
   Provider.value(value: Api()),
+  Provider.value(value: StorageService()),
 ];
 
 /// Services that relies on other services
