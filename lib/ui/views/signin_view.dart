@@ -20,9 +20,9 @@ class _SignInState extends State<SignInView> {
   final _formKey = GlobalKey<FormState>();
   String _email;
   String _password;
-  String _confirmPassword;
 
   bool _isRegistering = false;
+  bool _registerComplete = false;
 
   bool _enableBtn = false;
 
@@ -42,7 +42,10 @@ class _SignInState extends State<SignInView> {
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
                     child: model.busy
-                        ? Center(child: CircularProgressIndicator())
+                        ? Container(
+                            width: 200,
+                            height: 200,
+                            child: Center(child: CircularProgressIndicator()))
                         : Column(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -55,6 +58,9 @@ class _SignInState extends State<SignInView> {
                                     color: AppColor.sandy),
                               ),
                               SizedBox(height: 75),
+                              _registerComplete ?
+                                  Text("Please check your email to verify your account")
+                                  :
                               _isRegistering
                                   ? _buildRegisterForm(model)
                                   : _buildSignInForm(model),
@@ -193,7 +199,6 @@ class _SignInState extends State<SignInView> {
                 labelText: 'Confirm your password',
               ),
               validator: _validateConfirmPassword,
-              onSaved: (value) => _confirmPassword = value,
             ),
             SizedBox(height: 10),
             Row(
@@ -216,13 +221,17 @@ class _SignInState extends State<SignInView> {
                         ? () async {
                             var registerSucceed =
                                 await model.register(_email, _password);
-                            if(registerSucceed) {
-
+                            if (registerSucceed) {
+                              setState(() {
+                                _registerComplete = true;
+                              });
                             } else {
                               setState(() {
                                 _isRegistering = false;
                               });
-                              Toast.show("Email already used", context, duration: Toast.LENGTH_LONG, gravity: Toast.CENTER);
+                              Toast.show("Email already used", context,
+                                  duration: Toast.LENGTH_LONG,
+                                  gravity: Toast.CENTER);
                             }
                           }
                         : null)
@@ -246,14 +255,16 @@ class _SignInState extends State<SignInView> {
   }
 
   String _validatePassword(String value) {
-    if (value.length == 0) return 'Please enter your password.';
-    else if(value.length < 8) return 'Your password should contain at leats 8 characteres';
+    if (value.length == 0)
+      return 'Please enter your password.';
+    else if (value.length < 8)
+      return 'Your password should contain at leats 8 characteres';
     return null;
   }
 
   String _validateConfirmPassword(String value) {
-    if(value.length == 0 && _password.length == 0) return null;
-    if(value != _password) return 'Please enter the same password';
+    if (value.length == 0 && _password.length == 0) return null;
+    if (value != _password) return 'Please enter the same password';
     return null;
   }
 }
