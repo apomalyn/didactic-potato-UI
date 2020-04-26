@@ -1,12 +1,17 @@
-
-import 'package:UI/core/services/authentication_service.dart';
-import 'package:UI/core/viewmodels/base_view_model.dart';
+// FLUTTER
 import 'package:flutter/material.dart';
 
-class SignInViewModel extends BaseViewModel {
-  AuthenticationService _authenticationService;
+// SERVICE
+import 'package:UI/core/services/user_repository.dart';
 
-  SignInViewModel({@required AuthenticationService authenticationService}) {
+// OTHER
+import 'package:UI/core/viewmodels/base_view_model.dart';
+
+
+class SignInViewModel extends BaseViewModel {
+  UserRepository _authenticationService;
+
+  SignInViewModel({@required UserRepository authenticationService}) {
     _authenticationService = authenticationService;
   }
 
@@ -31,9 +36,9 @@ class SignInViewModel extends BaseViewModel {
   /// Try to sign in the user using a email/password
   Future<bool> signInWithEmail(String email, String password) async {
     setBusy(true);
-    // TODO var success = await _authenticationService.signInWithGoogle();
+    var success = await _authenticationService.signInWithEmail(email, password);
     setBusy(false);
 
-    return false;
+    return success;
   }
 }

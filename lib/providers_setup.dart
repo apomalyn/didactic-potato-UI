@@ -4,10 +4,10 @@ import 'package:provider/single_child_widget.dart';
 
 /// SERVICES
 import 'core/services/api.dart';
-import 'package:UI/core/services/authentication_service.dart';
+import 'package:UI/core/services/user_repository.dart';
 
 /// MODELS
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:UI/core/models/user.dart';
 
 List<SingleChildWidget> providers = [
   ...independentServices,
@@ -18,17 +18,21 @@ List<SingleChildWidget> providers = [
 /// Services completely independent
 List<SingleChildWidget> independentServices = [
   Provider.value(value: Api()),
-  Provider.value(value: AuthenticationService())
+  Provider.value(value: UserRepository())
 ];
 
 /// Services that relies on other services
-List<SingleChildWidget> dependentServices = [];
+List<SingleChildWidget> dependentServices = [
+  ProxyProvider<Api, UserRepository>(
+    update: (_, api, userRepository) => UserRepository(api: api),
+  )
+];
 
 /// Services that will get something to display
 /// Should be a StreamProvider
 List<SingleChildWidget> uiConsummableProviders = [
-  StreamProvider<FirebaseUser>(
+  StreamProvider<User>(
     create: (context) =>
-    Provider.of<AuthenticationService>(context, listen: false).user,
+    Provider.of<UserRepository>(context, listen: false).user,
   )
 ];

@@ -1,10 +1,10 @@
-/// FLUTTER AND THIRD PARTIES
+// FLUTTER AND THIRD PARTIES
 import 'package:flutter/material.dart';
 
-/// CONSTANTS
+// CONSTANTS
 import 'package:UI/core/constants/router_paths.dart';
 
-/// VIEWS
+// VIEWS
 import 'package:UI/ui/views/signin_view.dart';
 
 /// Router of the application
