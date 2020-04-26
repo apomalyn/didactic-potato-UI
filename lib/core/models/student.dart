@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 /// FLUTTER
 import 'package:flutter/material.dart';
 
@@ -59,4 +61,16 @@ class Student extends User {
                 ? JobType.PartTime
                 : JobType.FullTime);
   }
+
+  Map<String, dynamic> toJson() => {
+    'uuid': uuid,
+    'firstname': firstname,
+    'lastname': lastname,
+    'email': email,
+    'availabilities': jsonEncode(availabilities),
+    'appointments': jsonEncode(appointments),
+    'isAvailable': isAvailable,
+    'tags': jsonEncode(tags),
+    'jobType': searchingFor
+  };
 }

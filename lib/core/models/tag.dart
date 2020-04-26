@@ -12,6 +12,11 @@ class Tag{
     return Tag(name: json['name'], description: json['description']);
   }
 
+  Map<String, dynamic> toJson() => {
+    'name': name,
+    'description': description,
+  };
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -21,7 +26,4 @@ class Tag{
 
   @override
   int get hashCode => name.hashCode;
-
-
-
 }

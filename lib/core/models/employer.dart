@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 /// FLUTTER
 import 'package:flutter/material.dart';
 
@@ -39,4 +41,14 @@ class Employer extends User {
       favoris: (json['favoris'] as List).map((i) => Student.fromJson(i)).toList()
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    'uuid': uuid,
+    'firstname': firstname,
+    'lastname': lastname,
+    'email': email,
+    'availabilities': jsonEncode(availabilities),
+    'appointments': jsonEncode(appointments),
+    'favoris': jsonEncode(favoris),
+  };
 }

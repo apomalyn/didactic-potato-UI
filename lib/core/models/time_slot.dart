@@ -16,4 +16,9 @@ class TimeSlot {
       duration: json['duration']
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    'date': date,
+    'duration': duration,
+  };
 }

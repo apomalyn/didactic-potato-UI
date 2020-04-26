@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 /// FLUTTER
 import 'package:flutter/material.dart';
 
@@ -22,9 +24,16 @@ class Appointment {
   factory Appointment.fromJson(Map<String, dynamic> json) {
     return Appointment(
       timeSlot: TimeSlot.fromJson(json['timeSlot']),
-      student: json['student'],
-      employer: json['employer'],
-      meetingUrl: json['meetingUrl'],
+      student: json['studentuuid'],
+      employer: json['employeruuid'],
+      meetingUrl: json['url'],
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    'timeSlot': jsonEncode(timeSlot),
+    'studentuuid': student,
+    'employeruuid': employer,
+    'url': meetingUrl,
+  };
 }
