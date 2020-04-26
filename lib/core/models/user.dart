@@ -22,7 +22,7 @@ class User {
 
   bool isNewUser;
 
-  User({@required this.uuid, @required this.firstname, @required this.lastname, @required this.email, @required this.pictureLink,
+  User({@required this.uuid, @required this.firstname, @required this.lastname, @required this.email,
     @required this.availabilities, @required this.appointments});
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -31,7 +31,6 @@ class User {
       firstname: json['firstname'],
       lastname: json['lastname'],
       email: json['email'],
-      pictureLink: json['pictureLink'],
       availabilities: (json['availabilities'] as List).map((i) => TimeSlot.fromJson(i)).toList(),
       appointments: (json['appointments'] as List).map((i) => Appointment.fromJson(i)).toList(),
     );

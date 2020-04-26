@@ -26,10 +26,8 @@ class Student extends User {
       @required firstname,
       @required lastname,
       @required email,
-      @required pictureLink,
       @required availabilities,
       @required appointments,
-      @required this.cv,
       @required this.isAvailable,
       @required this.tags,
       @required this.searchingFor})
@@ -38,7 +36,6 @@ class Student extends User {
             firstname: firstname,
             lastname: lastname,
             email: email,
-            pictureLink: pictureLink,
             availabilities: availabilities,
             appointments: appointments);
 
@@ -48,14 +45,12 @@ class Student extends User {
         firstname: json['firstname'],
         lastname: json['lastname'],
         email: json['email'],
-        pictureLink: json['pictureLink'],
         availabilities: (json['availabilities'] as List)
             .map((i) => TimeSlot.fromJson(i))
             .toList(),
         appointments: (json['appointments'] as List)
             .map((i) => Appointment.fromJson(i))
             .toList(),
-        cv: json['cv'],
         isAvailable: json['isAvailable'],
         tags: (json['tags'] as List).map((i) => Tag.fromJson(i)).toList(),
         searchingFor: json['jobType'] == 'INTERNSHIP'
