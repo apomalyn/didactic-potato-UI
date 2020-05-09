@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:UI/core/models/time_slot.dart';
 import 'package:UI/core/models/appointment.dart';
 
+enum UserType { Student, Employer }
+
 class User {
   final String uuid;
 
